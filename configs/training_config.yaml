@@ -1,0 +1,48 @@
+# =============================================================================
+# Gemma3 QLoRA Fine-Tuning Configuration
+# =============================================================================
+# Tuned for NVIDIA RTX 4070 (12GB VRAM)
+# Adjust batch_size down if you hit OOM errors.
+
+# --- Model ---
+model:
+  name: "unsloth/gemma-3-4b-it"       # Instruction-tuned Gemma3 4B
+  max_seq_length: 2048                  # Max tokens per training example
+  load_in_4bit: true                    # 4-bit quantization (QLoRA)
+
+# --- LoRA ---
+lora:
+  r: 16                                # LoRA rank (higher = more params, more VRAM)
+  alpha: 32                             # LoRA alpha (scaling factor, typically 2x rank)
+  dropout: 0.05                         # Dropout on LoRA layers
+  target_modules:                       # Which layers to apply LoRA to
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+
+# --- Training ---
+training:
+  output_dir: "./output"
+  num_train_epochs: 3
+  per_device_train_batch_size: 2        # 2 fits comfortably in 12GB VRAM
+  gradient_accumulation_steps: 4        # Effective batch size = 2 * 4 = 8
+  learning_rate: 2.0e-4
+  warmup_steps: 10
+  weight_decay: 0.01
+  lr_scheduler_type: "linear"
+  logging_steps: 10
+  save_strategy: "epoch"
+  fp16: false                           # Gemma3 prefers bf16
+  bf16: true
+  optim: "adamw_8bit"                   # 8-bit Adam to save VRAM
+  seed: 42
+  max_grad_norm: 0.3
+
+# --- Dataset ---
+dataset:
+  train_file: "./data/synthetic/train.jsonl"
+  formatting: "instruction"             # instruction → response format
