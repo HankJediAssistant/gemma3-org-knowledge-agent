@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Run inference with the fine-tuned Gemma3 model.
+Run inference with the fine-tuned Gemma 3 4B model.
 
 Loads the base model + LoRA adapter and generates responses to questions.
 Works as both a CLI tool and an importable module.
@@ -38,7 +38,7 @@ SYSTEM_PROMPT = (
 
 
 class OrgAgent:
-    """Org knowledge Q&A agent backed by a fine-tuned Gemma3 model."""
+    """Org knowledge Q&A agent backed by a fine-tuned Gemma 3 4B model."""
 
     def __init__(
         self,
@@ -130,7 +130,7 @@ def interactive_mode(agent: OrgAgent):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Run inference with fine-tuned Gemma3 org knowledge agent"
+        description="Run inference with fine-tuned Gemma 3 4B org knowledge agent"
     )
     parser.add_argument(
         "--adapter",

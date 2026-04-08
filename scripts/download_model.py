@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Download the Gemma3 4B instruction-tuned model from HuggingFace.
+Download the Gemma 3 4B instruction-tuned model from HuggingFace.
 
-Gemma3 is a gated model — you need to:
-1. Accept the license at https://huggingface.co/google/gemma-3-4b-it
+Gemma 3 is a gated model — you need to:
+1. Accept the license at https://huggingface.co/unsloth/gemma-3-4b-it
 2. Set your HuggingFace token: export HF_TOKEN=hf_xxxxx
 
 The model will be saved to ./models/ for offline use.
@@ -24,10 +24,10 @@ def check_hf_token():
         print("=" * 60)
         print("ERROR: HF_TOKEN environment variable not set!")
         print()
-        print("Gemma3 is a gated model. You need to:")
+        print("Gemma 3 is a gated model. You need to:")
         print("  1. Create a HuggingFace account at https://huggingface.co")
-        print("  2. Accept the Gemma3 license at:")
-        print("     https://huggingface.co/google/gemma-3-4b-it")
+        print("  2. Accept the Gemma 3 license at:")
+        print("     https://huggingface.co/unsloth/gemma-3-4b-it")
         print("  3. Create an access token at:")
         print("     https://huggingface.co/settings/tokens")
         print("  4. Set the token:")
@@ -40,7 +40,7 @@ def check_hf_token():
 def download_model(model_name: str, output_dir: str, token: str):
     """Download model snapshot from HuggingFace Hub."""
     print(f"Downloading {model_name} to {output_dir}...")
-    print("This may take a while (~8GB for the 4B model).")
+    print("This may take a while.")
     print()
 
     local_dir = os.path.join(output_dir, model_name.replace("/", "--"))
@@ -61,7 +61,7 @@ def download_model(model_name: str, output_dir: str, token: str):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Download Gemma3 4B model from HuggingFace"
+        description="Download Gemma 3 4B model from HuggingFace"
     )
     parser.add_argument(
         "--model",

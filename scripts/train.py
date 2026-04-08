@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-QLoRA fine-tuning of Gemma3 4B using Unsloth.
+QLoRA fine-tuning of Gemma 3 4B using Unsloth.
 
 Loads training config from configs/training_config.yaml, then fine-tunes
 the model on the prepared instruction dataset using 4-bit quantization.
@@ -14,7 +14,7 @@ import os
 
 import unsloth  # must be first
 import torch
-# Disable torch.compile to avoid TorchDynamo bugs with Gemma3/Unsloth
+# Disable torch.compile to avoid TorchDynamo bugs with Unsloth
 torch._dynamo.config.disable = True
 import yaml
 from unsloth import FastLanguageModel
@@ -46,12 +46,12 @@ def format_chat_template(examples, tokenizer):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Fine-tune Gemma3 4B with QLoRA")
+    parser = argparse.ArgumentParser(description="Fine-tune Gemma 3 4B with QLoRA")
     parser.add_argument(
         "--config",
         type=str,
         default="./configs/training_config.yaml",
-        help="Path to training config YAML (default: ./configs/training_config.yaml)",
+        help="Path to training config YAML",
     )
     parser.add_argument(
         "--resume-from",
@@ -112,6 +112,7 @@ def main():
         lambda examples: format_chat_template(examples, tokenizer),
         batched=True,
         remove_columns=dataset.column_names,
+        num_proc=1,  # Avoid multiprocessing OOM on tokenization
     )
 
     # -------------------------------------------------------------------------

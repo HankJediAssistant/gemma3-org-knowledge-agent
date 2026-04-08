@@ -1,8 +1,8 @@
-# 🧠 Gemma3 Org Knowledge Agent
+# 🧠 Gemma 3 4B Org Knowledge Agent
 
 Fine-tune Google's **Gemma 3 4B** model on organizational Q&A data using **QLoRA + Unsloth**, then run inference locally — no cloud, no API keys, no cost per query.
 
-> Built and trained on a single **NVIDIA RTX 4070 (12GB VRAM)** in under 6 minutes.
+> Built and trained on a single **NVIDIA RTX 4070 (12GB VRAM)**.
 
 ---
 
@@ -10,7 +10,10 @@ Fine-tune Google's **Gemma 3 4B** model on organizational Q&A data using **QLoRA
 
 Turns a general-purpose LLM into an **organizational knowledge expert** — a model that knows your team structure, tooling, workflows, pain points, and processes. Ask it anything your new hires would struggle to find in a wiki.
 
-### Training Loss: 5.27 → 0.075 (3 epochs, 216 steps, ~6 min)
+### Historical Training Results (Gemma 3 4B)
+
+> The results below were from the initial proof-of-concept using Gemma 3 4B.
+> These results are from the proof-of-concept using Gemma 3 4B.
 
 ```
 Step 10:  loss=1.37
@@ -57,7 +60,7 @@ pip uninstall torchao -y   # prevents torch version conflicts
 
 ### 2. Set HuggingFace token
 
-Gemma 3 is a gated model. Accept the license at [huggingface.co/google/gemma-3-4b-it](https://huggingface.co/google/gemma-3-4b-it), then:
+Gemma 3 is a gated model. Accept the license at [huggingface.co/unsloth/gemma-3-4b-it](https://huggingface.co/unsloth/gemma-3-4b-it), then:
 
 ```bash
 export HF_TOKEN="hf_your_token_here"
@@ -69,7 +72,7 @@ export HF_TOKEN="hf_your_token_here"
 python scripts/download_model.py
 ```
 
-Downloads `unsloth/gemma-3-4b-it` (~8GB) to `models/`.
+Downloads `unsloth/gemma-3-4b-it` to `models/`.
 
 ### 4. Generate synthetic training data (POC)
 
@@ -86,7 +89,7 @@ Creates 640 synthetic Q&A examples across 10 fictional semiconductor/tech orgs �
 python scripts/train.py
 ```
 
-~6 minutes on RTX 4070. LoRA adapter saved to `output/final/`.
+LoRA adapter saved to `output/final/`.
 
 ### 6. Run inference
 
@@ -129,7 +132,7 @@ gemma3-org-agent/
 ├── README.md
 ├── requirements.txt
 ├── scripts/
-│   ├── download_model.py          # Download Gemma3 4B from HuggingFace
+│   ├── download_model.py          # Download Gemma 3 4B from HuggingFace
 │   ├── generate_synthetic_data.py # Generate synthetic Q&A dataset
 │   ├── prepare_dataset.py         # Format into instruction JSONL
 │   ├── train.py                   # QLoRA fine-tuning with Unsloth
@@ -169,13 +172,13 @@ pip install "torch>=2.6.0" torchvision --index-url https://download.pytorch.org/
 pip uninstall torchao -y
 ```
 
-**`TorchDynamo InternalTorchDynamoError`**  
+**`TorchDynamo InternalTorchDynamoError`**
 Add to the top of `train.py` after imports:
 ```python
 torch._dynamo.config.disable = True
 ```
 
-**OOM during training**  
+**OOM during training**
 Reduce `per_device_train_batch_size` to 1 in `configs/training_config.yaml`.
 
 ---
@@ -183,7 +186,7 @@ Reduce `per_device_train_batch_size` to 1 in `configs/training_config.yaml`.
 ## Tech Stack
 
 - [Unsloth](https://github.com/unslothai/unsloth) — 2x faster QLoRA fine-tuning
-- [Google Gemma 3 4B-IT](https://huggingface.co/google/gemma-3-4b-it) — base model
+- [Google Gemma 3 4B-IT](https://huggingface.co/unsloth/gemma-3-4b-it) — base model
 - [HuggingFace TRL](https://github.com/huggingface/trl) — SFTTrainer
 - [PEFT](https://github.com/huggingface/peft) — LoRA adapters
 - PyTorch 2.6 + CUDA 12.4
@@ -192,4 +195,4 @@ Reduce `per_device_train_batch_size` to 1 in `configs/training_config.yaml`.
 
 ## License
 
-MIT
+Apache 2.0 — see [LICENSE](LICENSE) for details.

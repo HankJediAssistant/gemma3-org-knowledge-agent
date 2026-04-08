@@ -2,7 +2,7 @@
 torch>=2.1.0
 
 # Unsloth — fast QLoRA fine-tuning for consumer GPUs
-unsloth[colab-new]>=2024.8
+unsloth[colab-new]
 
 # HuggingFace ecosystem
 transformers>=4.44.0
