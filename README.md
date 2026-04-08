@@ -114,6 +114,30 @@ Compares base model vs fine-tuned on test questions.
 
 ---
 
+## Chat Interface
+
+### Step 1: Export model to Ollama
+```bash
+python scripts/export_to_ollama.py
+ollama create org-agent -f output/Modelfile
+```
+
+### Step 2: Start chatting
+```bash
+python chat.py
+# or with persistent history:
+python chat.py --history-file chat_history.json
+# or with a different model:
+python chat.py --model my-custom-model
+```
+
+### Commands
+- `/clear` — reset conversation history
+- `/save` — save history to file
+- `/quit` — exit
+
+---
+
 ## Hardware Requirements
 
 | Component | Minimum | Used Here |
@@ -131,13 +155,15 @@ Compares base model vs fine-tuned on test questions.
 gemma3-org-agent/
 ├── README.md
 ├── requirements.txt
+├── chat.py                        # Terminal chat UI (Ollama)
 ├── scripts/
 │   ├── download_model.py          # Download Gemma 3 4B from HuggingFace
 │   ├── generate_synthetic_data.py # Generate synthetic Q&A dataset
 │   ├── prepare_dataset.py         # Format into instruction JSONL
 │   ├── train.py                   # QLoRA fine-tuning with Unsloth
 │   ├── inference.py               # Load model + adapter, run queries
-│   └── evaluate.py                # Compare base vs fine-tuned
+│   ├── evaluate.py                # Compare base vs fine-tuned
+│   └── export_to_ollama.py        # Export LoRA → GGUF for Ollama
 ├── data/
 │   ├── synthetic/                 # Generated POC dataset
 │   └── real/                      # Drop real employee data here

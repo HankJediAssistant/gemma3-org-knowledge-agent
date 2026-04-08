@@ -16,3 +16,7 @@ huggingface_hub>=0.24.0
 # Utilities
 pyyaml>=6.0
 tqdm>=4.66.0
+
+# Chat interface
+rich>=13.0
+requests>=2.31.0
